@@ -1,0 +1,12 @@
+<ion-view view-title="Halloween">
+  <ion-content>
+    <ion-list>
+      <ion-item class="item-icon-right"
+        ng-repeat="sound in model.sounds"
+        ng-click="play(sound)">
+        <span>{{sound.title}}</span>
+        <i class='icon ion-volume-high'></i>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-view>

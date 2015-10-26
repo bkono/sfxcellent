@@ -41,16 +41,54 @@ angular.module('starter.controllers', [])
   };
 })
 
-.controller('PlaylistsCtrl', function($scope) {
-  $scope.playlists = [
-    { title: 'Reggae', id: 1 },
-    { title: 'Chill', id: 2 },
-    { title: 'Dubstep', id: 3 },
-    { title: 'Indie', id: 4 },
-    { title: 'Rap', id: 5 },
-    { title: 'Cowbell', id: 6 }
-  ];
-})
 
-.controller('PlaylistCtrl', function($scope, $stateParams) {
+.controller('HalloweenCtrl', function($scope, $window) {
+  $scope.model = model = {}
+
+  model.sounds = [
+    {title: 'Scream 1', src: '/sounds/scream-1.wav'}
+  ]
+
+  $scope.play = function(sound) {
+    if ($scope.media) {
+      $scope.media.pause();
+    }
+
+    if ($window.cordova) {
+      playOnDevice(sound);
+    } else {
+      playInBrowser(sound);
+    }
+
+
+    if ($window.cordova) {
+      ionic.Platform.ready(function() {
+        if (ionic.Platform.is('android')) {
+          src = '/android_asset/www/' + src;
+        }
+      });
+    }
+  };
+
+  playInBrowser = function(sound) {
+    $scope.media = new Audio();
+    $scope.media.src = sound.src;
+    $scope.media.load();
+    $scope.media.play();
+  }
+
+  playOnDevice = function(sound) {
+    $scope.media = new $window.Media(srcForSound(sound));
+    $scope.media.play();
+  }
+
+  srcForSound = function(sound) {
+    src = sound.src;
+    ionic.Platform.ready(function() {
+      if (ionic.Platform.is('android')) {
+        src = '/android_asset/www/' + src;
+      }
+      return src;
+    });
+  }
 });
