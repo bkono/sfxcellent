@@ -88,4 +88,48 @@ angular.module('starter.controllers', [])
       return src;
     });
   }
+})
+
+.controller('SettingsCtrl', function($scope, $window) {
+  var deploy;
+  $scope.model = {};
+  $scope.model.updateStatus = 'Checking for updates...';
+
+  updateStatusText = function() {
+    if($scope.model.hasUpdate) {
+      $scope.model.updateStatus = "Update available!"
+    } else {
+      $scope.model.updateStatus = "You're running the latest version."
+    }
+  }
+
+  checkForUpdates = function() {
+    if(!$window.cordova) {
+      console.log('In a browser, not checking for updates.');
+      $scope.model.hasUpdate = false;
+      updateStatusText();
+    } else {
+      ionic.Platform.ready(function(){
+        deploy = new Ionic.Deploy();
+        console.log('Checking for updates...');
+        deploy.check().then(function(hasUpdate) {
+          console.log('Updated available? ' + hasUpdate);
+          $scope.model.hasUpdate = hasUpdate;
+          updateStatusText();
+        });
+      });
+    }
+  }
+
+  doUpdate = function() {
+    deploy.update().then(function(res) {
+      console.log('Ionic Deploy: Update Success! ', res);
+    }, function(err) {
+      console.log('Ionic Deploy: Update error! ', err);
+    }, function(prog) {
+      console.log('Ionic Deploy: Progress... ', prog);
+    });
+  }
+
+  checkForUpdates();
 });

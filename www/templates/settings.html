@@ -1,0 +1,18 @@
+<ion-view view-title="Settings">
+  <ion-content>
+    <ul class='list'>
+      <div class= 'item item-divider'>Updates</div>
+      <li class='item'>
+        Current Version: 1.0.0
+      </li>
+      <li class='item center'>
+        <span>{{model.updateStatus}}</span>
+        <button class="button button-stable button-block button-pulse" 
+          ng-if="model.hasUpdate" ng-click="doUpdate()">
+          Download Update
+        </button>
+      </li>
+    </ul>
+
+  </ion-content>
+</ion-view>
