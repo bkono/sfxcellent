@@ -4,7 +4,7 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic','ionic.service.core', 'starter.controllers'])
+angular.module('starter', ['ionic','ionic.service.core', 'starter.services', 'starter.controllers'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -49,34 +49,46 @@ angular.module('starter', ['ionic','ionic.service.core', 'starter.controllers'])
         }
       }
     })
-    .state('app.playlists', {
-      url: '/playlists',
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/playlists.html',
-          controller: 'PlaylistsCtrl'
-        }
-      }
-    })
     .state('app.halloween', {
       url: '/halloween',
       views: {
         'menuContent': {
-          templateUrl: 'templates/halloween.html',
-          controller: 'HalloweenCtrl'
+          templateUrl: 'templates/soundboard.html',
+          controller: 'SoundboardCtrl',
+          resolve: {
+            viewTitle: function() { return 'Halloween' },
+            sounds: function(Sounds) {
+              return Sounds.getSoundCategory('halloween');
+            }
+          }
+        }
+      }
+    })
+    .state('app.sciFi', {
+      url: '/sciFi',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/soundboard.html',
+          controller: 'SoundboardCtrl',
+          resolve: {
+            viewTitle: function() { return 'Sci-Fi' },
+            sounds: function(Sounds) {
+              return Sounds.getSoundCategory('sci-fi');
+            }
+          }
         }
       }
     })
 
-  .state('app.single', {
-    url: '/playlists/:playlistId',
-    views: {
-      'menuContent': {
-        templateUrl: 'templates/playlist.html',
-        controller: 'PlaylistCtrl'
+    .state('app.single', {
+      url: '/playlists/:playlistId',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/playlist.html',
+          controller: 'PlaylistCtrl'
+        }
       }
-    }
-  });
-  // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/app/halloween');
+    });
+    // if none of the above states are matched, use this as the fallback
+    $urlRouterProvider.otherwise('/app/sciFi');
 });

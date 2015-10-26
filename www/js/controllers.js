@@ -41,13 +41,10 @@ angular.module('starter.controllers', [])
   };
 })
 
-
-.controller('HalloweenCtrl', function($scope, $window) {
-  $scope.model = model = {}
-
-  model.sounds = [
-    {title: 'Scream 1', src: '/sounds/scream-1.wav'}
-  ]
+.controller('SoundboardCtrl', function($scope, $window, viewTitle, sounds) {
+  $scope.model = model = {};
+  $scope.viewTitle = viewTitle;
+  model.sounds = sounds;
 
   $scope.play = function(sound) {
     if ($scope.media) {
