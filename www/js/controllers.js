@@ -96,11 +96,13 @@ angular.module('starter.controllers', [])
   $scope.model.updateStatus = 'Checking for updates...';
 
   updateStatusText = function() {
-    if($scope.model.hasUpdate) {
-      $scope.model.updateStatus = "Update available!"
-    } else {
-      $scope.model.updateStatus = "You're running the latest version."
-    }
+    $scope.$apply(function() {
+      if($scope.model.hasUpdate) {
+        $scope.model.updateStatus = "Update available!"
+      } else {
+        $scope.model.updateStatus = "You're running the latest version."
+      }
+    });
   }
 
   checkForUpdates = function() {
@@ -113,7 +115,7 @@ angular.module('starter.controllers', [])
         deploy = new Ionic.Deploy();
         console.log('Checking for updates...');
         deploy.check().then(function(hasUpdate) {
-          console.log('Updated available? ' + hasUpdate);
+          console.log('Update available? ' + hasUpdate);
           $scope.model.hasUpdate = hasUpdate;
           updateStatusText();
         });
