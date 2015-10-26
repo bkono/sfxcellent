@@ -52,18 +52,12 @@ angular.module('starter.controllers', [])
     }
 
     if ($window.cordova) {
-      playOnDevice(sound);
+      ionic.Platform.ready(function() {
+        console.log('calling play on the device');
+        playOnDevice(sound);
+      });
     } else {
       playInBrowser(sound);
-    }
-
-
-    if ($window.cordova) {
-      ionic.Platform.ready(function() {
-        if (ionic.Platform.is('android')) {
-          src = '/android_asset/www/' + src;
-        }
-      });
     }
   };
 
@@ -75,18 +69,20 @@ angular.module('starter.controllers', [])
   }
 
   playOnDevice = function(sound) {
-    $scope.media = new $window.Media(srcForSound(sound));
+    console.log('grabbing src for sound');
+    src = srcForSound(sound);
+    console.log('src is: ' + src)
+    $scope.media = new $window.Media(src);
     $scope.media.play();
+    console.log('on device play completed. media is: ' + $scope.media);
   }
 
   srcForSound = function(sound) {
     src = sound.src;
-    ionic.Platform.ready(function() {
-      if (ionic.Platform.is('android')) {
-        src = '/android_asset/www/' + src;
-      }
-      return src;
-    });
+    if (ionic.Platform.is('android')) {
+      src = '/android_asset/www/' + src;
+    }
+    return src;
   }
 })
 
